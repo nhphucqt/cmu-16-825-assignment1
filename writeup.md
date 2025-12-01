@@ -58,15 +58,18 @@ Result:
 
 ### Dolly (zoom-with-compensation) main formula
 
-Given a vertical field of view $\mathrm{fov}$ (in degrees), the camera distance is set to
-
+The distance formula to keep the object the same size in the frame while changing the field of view is given by:
 $$
-d(\mathrm{fov}) \;=\; \frac{2}{\tan\!\left(\frac{\mathrm{fov}}{2}\right)}
+d(\mathrm{fov}) = \frac{W/2}{\tan\left(\frac{\mathrm{fov}}{2}\right)}
+$$
+where $W$ is the width of the scene, and $\mathrm{fov}$ is the field of view in degrees. the closest distance to the object is $1.5$ units, which corresponds to a field of view of $120$ degrees, so we have 
+$$
+W = 2 \cdot 1.5 \cdot \tan(120/2) \approx 5
 $$
 
 ```python
 for fov in tqdm(fovs):
-    distance = 1/np.tan(fov/2 * np.pi / 180) * 2
+    distance = (5/2) / np.tan(np.radians(fov/2))
     T = [[0, 0, distance]]
     ...
 ```
@@ -302,7 +305,13 @@ $$
 
 Results:
 
-![](output/cow_view_0.png) ![](output/cow_view_1.png) ![](output/cow_view_2.png) ![](output/cow_view_3.png) ![](output/cow_view_4.png) ![](output/cow_view_5.png)
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <img src="output/cow_view_0.png" alt="cow_view_0">
+    <img src="output/cow_view_1.png" alt="cow_view_1">
+    <img src="output/cow_view_2.png" alt="cow_view_2">
+    <img src="output/cow_view_3.png" alt="cow_view_3">
+    <img src="output/cow_view_4.png" alt="cow_view_4">
+</div>
 
 # 5. Rendering Generic 3D Representations (45 Points)
 
@@ -395,6 +404,8 @@ camera_point_360(point_cloud2, distance=6.0, duration=2, elevation=0, output_pat
 camera_point_360(point_cloud_unified, distance=6.0, duration=2, elevation=0, output_path="output/point_cloud_unified_360.gif")
 ```
 
+    /root/anaconda3/envs/ml3d/lib/python3.9/site-packages/torch/functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /opt/conda/conda-bld/pytorch_1666643016022/work/aten/src/ATen/native/TensorShape.cpp:3190.)
+      return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
     100%|██████████| 36/36 [00:00<00:00, 117.94it/s]
     100%|██████████| 36/36 [00:00<00:00, 134.54it/s]
     100%|██████████| 36/36 [00:00<00:00, 89.51it/s]
@@ -402,7 +413,12 @@ camera_point_360(point_cloud_unified, distance=6.0, duration=2, elevation=0, out
 
 Results:
 
-![](output/point_cloud1_360.gif) ![](output/point_cloud2_360.gif) ![](output/point_cloud_unified_360.gif)
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <img src="output/point_cloud1_360.gif" alt="point_cloud1_360">
+    <img src="output/point_cloud2_360.gif" alt="point_cloud2_360">
+    <img src="output/point_cloud_unified_360.gif" alt="point_cloud_unified_360">
+</div>
+
 
 ## 5.2 Parametric Functions (10 + 5 points)
 
@@ -484,13 +500,17 @@ camera_point_360(trefoil_pointcloud(num_samples=5000), elevation=0, duration=2, 
 
 Result:
 
-![](output/torus_pointcloud.gif) 
-![](output/torus_pointcloud_1000.gif)
-![](output/torus_pointcloud_5000.gif)
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <img src="output/torus_pointcloud.gif" alt="torus_pointcloud">
+    <img src="output/torus_pointcloud_1000.gif" alt="torus_pointcloud_1000">
+    <img src="output/torus_pointcloud_5000.gif" alt="torus_pointcloud_5000">
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <img src="output/trefoil_pointcloud.gif" alt="trefoil_pointcloud">
+    <img src="output/trefoil_pointcloud_1000.gif" alt="trefoil_pointcloud_1000">
+    <img src="output/trefoil_pointcloud_5000.gif" alt="trefoil_pointcloud_5000">
+</div>
 
-![](output/trefoil_pointcloud.gif)
-![](output/trefoil_pointcloud_1000.gif)
-![](output/trefoil_pointcloud_5000.gif)
 
 ## 5.3 Implicit Surfaces (15 + 5 points)
 
@@ -571,7 +591,10 @@ camera360(ellipsoid_mesh(), elevation=30, duration=2, output_path="output/ellips
 
 Results:
 
-![](output/torus_mesh.gif) ![](output/ellipsoid_mesh.gif)
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <img src="output/torus_mesh.gif" alt="torus_mesh">
+    <img src="output/ellipsoid_mesh.gif" alt="ellipsoid_mesh">
+</div>
 
 # 6. Do Something Fun (10 points)
 
@@ -723,24 +746,25 @@ Result of sampling 1000 points from the cow mesh with different combinations of 
 Uniform face sampling and uniform barycentric coordinate sampling:
 
 <!-- <div align="center"> -->
-  <img src="output/cow_sampled_pointcloud_uniform_uniform.gif" alt="cow_sampled_pointcloud_uniform_uniform" width="25%">
+  <img src="output/cow_sampled_pointcloud_uniform_uniform.gif" alt="cow_sampled_pointcloud_uniform_uniform" width="50%">
 <!-- </div> -->
 
 Uniform face sampling and biased barycentric coordinate sampling:
 
 <!-- <div align="center"> -->
-  <img src="output/cow_sampled_pointcloud_uniform_bias.gif" alt="cow_sampled_pointcloud_uniform_bias" width="25%">
+  <img src="output/cow_sampled_pointcloud_uniform_bias.gif" alt="cow_sampled_pointcloud_uniform_bias" width="50%">
 <!-- </div> -->
 
 Biased face sampling and uniform barycentric coordinate sampling:
 
 <!-- <div align="center"> -->
-  <img src="output/cow_sampled_pointcloud_bias_uniform.gif" alt="cow_sampled_pointcloud_bias_uniform" width="25%">
+  <img src="output/cow_sampled_pointcloud_bias_uniform.gif" alt="cow_sampled_pointcloud_bias_uniform" width="50%">
 <!-- </div> -->
 
 Biased face sampling and biased barycentric coordinate sampling:
 
 <!-- <div align="center"> -->
-  <img src="output/cow_sampled_pointcloud_bias_bias.gif" alt="cow_sampled_pointcloud_bias_bias" width="25%">
+  <img src="output/cow_sampled_pointcloud_bias_bias.gif" alt="cow_sampled_pointcloud_bias_bias" width="50%">
 <!-- </div> -->
+
 
